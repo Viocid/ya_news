@@ -14,8 +14,13 @@ class TestContent(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        News.objects.bulk_create(
-            News(title=f'Новость {index}', text='Просто текст.')
+        today = datetime.today()
+        all_news = [
+            News(
+                title=f'Новость {index}',
+                text='Просто текст.',
+                date=today - timedelta(days=index)
+            )
             for index in range(settings.NEWS_COUNT_ON_HOME_PAGE + 1)
         )
 
