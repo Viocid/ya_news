@@ -7,19 +7,41 @@ from pytest_django.asserts import assertRedirects
 
 @pytest.mark.django_db
 @pytest.mark.parametrize(
-    "name, args",
+    "reverse_url, parametrized_client, expected_status",
     (
-        ("news:home", None),
-        ("users:login", None),
-        ("users:logout", None),
-        ("users:signup", None),
-        ("news:detail", pytest.lazy_fixture("id_for_args")),
+        (
+            pytest.lazy_fixture("url_home"),
+            pytest.lazy_fixture("not_author_client"),
+            HTTPStatus.OK,
+        ),
+        (
+            pytest.lazy_fixture("url_login"),
+            pytest.lazy_fixture("not_author_client"),
+            HTTPStatus.OK,
+        ),
+        (
+            pytest.lazy_fixture("url_logout"),
+            pytest.lazy_fixture("not_author_client"),
+            HTTPStatus.OK,
+        ),
+        (
+            pytest.lazy_fixture("url_signup"),
+            pytest.lazy_fixture("not_author_client"),
+            HTTPStatus.OK,
+        ),
+        (
+            pytest.lazy_fixture("url_detail"),
+            pytest.lazy_fixture("not_author_client"),
+            HTTPStatus.OK,
+        ),
     ),
 )
-def test_pages_availability_for_anonymous_user(client, name, args):
-    url = reverse(name, args=args)
-    response = client.get(url)
-    assert response.status_code == HTTPStatus.OK
+def test_pages_availability_for_anonymous_user(
+    reverse_url, parametrized_client, expected_status, news
+):
+
+    response = parametrized_client.get(reverse_url)
+    assert response.status_code == expected_status
 
 
 @pytest.mark.parametrize(
