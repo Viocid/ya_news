@@ -96,17 +96,6 @@ def url_delete(comment):
 
 
 @pytest.fixture
-def url_reverse(url_delete, url_edit, news):
-    return (
-        url_home,
-        reverse("users:login"),
-        reverse("users:logout"),
-        reverse("users:signup"),
-        url_detail,
-    )
-
-
-@pytest.fixture
 def url_login():
     return reverse("users:login")
 
@@ -119,6 +108,17 @@ def url_logout():
 @pytest.fixture
 def url_signup():
     return reverse("users:signup")
+
+
+@pytest.fixture
+def url_reverse():
+    return (
+        url_home,
+        url_login,
+        url_logout,
+        url_signup,
+        url_detail,
+    )
 
 
 @pytest.fixture
